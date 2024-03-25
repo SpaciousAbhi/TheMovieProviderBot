@@ -11,7 +11,7 @@ async def broadcast_to_users(bot, message):
     users = await db.get_all_users()
     b_msg = message.reply_to_message
     sts = await message.reply_text(
-        text='Broadcasting your messages...'
+        text=f'Starting broadcast to {len(users)} users...'
     )
     start_time = datetime.datetime.now()
     total_users = await db.total_users_count()
@@ -20,47 +20,41 @@ async def broadcast_to_users(bot, message):
     deleted = 0
     failed = 0
 
-    async def send_message(user):
-        nonlocal success, blocked, deleted, failed
+    for index, user in enumerate(users, start=1):
         pti, sh = await broadcast_messages(int(user['id']), b_msg)
         if pti:
             success += 1
-        elif pti == False:
+        elif pti is False:
             if sh == "Blocked":
                 blocked += 1
             elif sh == "Deleted":
                 deleted += 1
             elif sh == "Error":
                 failed += 1
-
-    tasks = [send_message(user) for user in users]
-    await asyncio.gather(*tasks)
+        await sts.edit(f"Broadcasting in progress:\n\nTotal Users: {total_users}\nCurrent User: {index}\nSuccess: {success}\nBlocked: {blocked}\nDeleted: {deleted}\nFailed: {failed}")
 
     time_taken = datetime.datetime.now() - start_time
-    await sts.edit(f"Broadcast Completed:\nCompleted in {time_taken.total_seconds()} seconds.\n\nTotal Users {total_users}\nSuccess: {success}\nBlocked: {blocked}\nDeleted: {deleted}\nFailed: {failed}")
+    await sts.edit(f"Broadcast Completed:\nCompleted in {time_taken.total_seconds()} seconds.\n\nTotal Users: {total_users}\nSuccess: {success}\nBlocked: {blocked}\nDeleted: {deleted}\nFailed: {failed}")
 
 @Client.on_message(filters.command("grp_broadcast") & filters.user(ADMINS) & filters.reply)
 async def broadcast_to_groups(bot, message):
     groups = await db.get_all_chats()
     b_msg = message.reply_to_message
     sts = await message.reply_text(
-        text='Broadcasting your messages to Groups...'
+        text=f'Starting broadcast to {len(groups)} groups...'
     )
     start_time = datetime.datetime.now()
     total_groups = await db.total_chat_count()
     success = 0
     failed = 0
 
-    async def send_message(group):
-        nonlocal success, failed
+    for index, group in enumerate(groups, start=1):
         pti, sh = await broadcast_messages_group(int(group['id']), b_msg)
         if pti:
             success += 1
-        elif sh == "Error":
+        elif pti is False:
             failed += 1
-
-    tasks = [send_message(group) for group in groups]
-    await asyncio.gather(*tasks)
+        await sts.edit(f"Broadcasting in progress:\n\nTotal Groups: {total_groups}\nCurrent Group: {index}\nSuccess: {success}\nFailed: {failed}")
 
     time_taken = datetime.datetime.now() - start_time
-    await sts.edit(f"Broadcast Completed:\nCompleted in {time_taken.total_seconds()} seconds.\n\nTotal Groups {total_groups}\nSuccess: {success}\nFailed: {failed}")
+    await sts.edit(f"Broadcast Completed:\nCompleted in {time_taken.total_seconds()} seconds.\n\nTotal Groups: {total_groups}\nSuccess: {success}\nFailed: {failed}")
