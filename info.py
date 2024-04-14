@@ -59,8 +59,8 @@ VERIFY = bool(environ.get('VERIFY', True)) # Verification On ( True ) / Off ( Fa
 HOWTOVERIFY = environ.get('HOWTOVERIFY', 'https://t.me/VenomStoneMovies/2430') # How to open tutorial link for verification
 
 # Others
-SHORTLINK_URL = environ.get('SHORTLINK_URL', 'publicearn.com')
-SHORTLINK_API = environ.get('SHORTLINK_API', 'c464f482d973a7e88ba6cb7077a3afa5de229dd5')
+SHORTLINK_URL = environ.get('SHORTLINK_URL', 'shrinkforearn.in')
+SHORTLINK_API = environ.get('SHORTLINK_API', '8f5004df46babcee0f2996711ff8598938eb0cfd')
 IS_SHORTLINK = bool(environ.get('IS_SHORTLINK', False))
 DELETE_CHANNELS = [int(dch) if id_pattern.search(dch) else dch for dch in environ.get('DELETE_CHANNELS', '0').split()]
 MAX_B_TN = environ.get("MAX_B_TN", "5")
