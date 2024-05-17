@@ -15,7 +15,7 @@ def is_enabled(value, default):
 SESSION = environ.get('SESSION', 'Venom')
 API_ID = environ.get('API_ID', '22663326')
 API_HASH = environ.get('API_HASH', '927e822ca6e854d8b7369c72ab9506e4')
-BOT_TOKEN = environ.get('BOT_TOKEN', "6852782377:AAHl-H4N4DpJzeo__cPpvkvXpESRqpvhyGg")
+BOT_TOKEN = environ.get('BOT_TOKEN', "6852782377:AAGFjtl3Z6OkPnZJUZ24CXmMcdTsD1WpBbA")
 
 # Bot settings
 CACHE_TIME = int(environ.get('CACHE_TIME', 300))
